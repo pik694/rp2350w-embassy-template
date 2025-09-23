@@ -50,16 +50,26 @@
           '';
         };
 
+        cargo-lint = pkgs.writeShellApplication {
+          name = "cargo-lint";
+          runtimeInputs = devTools;
+          text = builtins.readFile ./scripts/lint.sh;
+        };
+
       in
       {
         packages = {
-          inherit bake-cyw43;
+          inherit bake-cyw43 cargo-lint;
         };
 
         apps = {
           bake-cyw43 = {
             type = "app";
             program = "${bake-cyw43}/bin/bake-cyw43";
+          };
+          cargo-lint = {
+            type = "app";
+            program = "${cargo-lint}/bin/cargo-lint";
           };
         };
 
@@ -69,6 +79,7 @@
             ++ devTools
             ++ [
               bake-cyw43
+              cargo-lint
             ];
         };
       }
