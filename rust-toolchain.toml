@@ -1,0 +1,5 @@
+[toolchain]
+channel = "1.90"
+components = ["rustfmt", "rust-src", "rust-analyzer", "clippy"]
+profile = "minimal"
+targets = [ "thumbv8m.main-none-eabihf", "aarch64-apple-darwin" ]
