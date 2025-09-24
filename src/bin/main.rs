@@ -9,7 +9,7 @@ use embassy_rp::pio::InterruptHandler;
 
 use {defmt_rtt as _, panic_probe as _};
 
-use defmt::info;
+use rp2350w_embassy_template::logging::*;
 
 bind_interrupts!(struct Irqs {
     PIO0_IRQ_0 => InterruptHandler<PIO0>;

@@ -3,17 +3,16 @@ name = "rp2350w-embassy-template"
 version = "0.1.0"
 edition = "2024"
 
-[lib]
-test = false
-
 [[bin]]
 name = "rp2350w-embassy-template-bin"
 path = "src/bin/main.rs"
-test = false
 required-features = ["bin"]
 
 [features]
-bin = ["embassy-rp"]
+default = ["log"]
+bin = ["embassy-rp", "defmt"]
+log = ["defmt-or-log-log", "dep:log"]
+defmt = ["defmt-or-log-defmt"]
 
 [dependencies]
 cortex-m = "0.7"
@@ -21,12 +20,18 @@ cortex-m-rt = "0.7"
 critical-section = { version = "1.2", default-features = false }
 
 defmt = "^1.0.1"
+defmt-or-log-defmt = { package = "defmt-or-log", version = "0.2.2", features = ["defmt"], optional = true }
+defmt-or-log-log = { package = "defmt-or-log", version = "0.2.2", features = ["log"], optional = true }
 defmt-rtt = "^1.0.0"
+log = { version = "0.4.26", optional = true }
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 
 embassy-executor = { version = "0.9.1", features = ["defmt", "arch-cortex-m", "executor-thread"] }
-embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"], optional=true }
+embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"], optional = true }
 embedded-hal = "1.0.0"
+
+[dev-dependencies]
+env_logger = "0.11.5"
 
 [profile.dev]
 codegen-units = 1
@@ -46,4 +51,4 @@ opt-level = 3
 overflow-checks = false
 
 [package.metadata.cargo-machete]
-ignored = ["critical-section", "cortex-m", "cortex-m-rt", "embedded-hal"]
+ignored = ["critical-section", "cortex-m", "cortex-m-rt", "embedded-hal", "log", "defmt"]
