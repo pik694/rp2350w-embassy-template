@@ -13,6 +13,8 @@ default = ["log"]
 bin = ["embassy-rp", "defmt"]
 log = ["defmt-or-log-log", "dep:log"]
 defmt = ["defmt-or-log-defmt"]
+baked-cyw43 = []
+wifi = ["bin", "cyw43", "cyw43-pio"]
 
 [dependencies]
 cortex-m = "0.7"
@@ -29,6 +31,12 @@ panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 embassy-executor = { version = "0.9.1", features = ["defmt", "arch-cortex-m", "executor-thread"] }
 embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"], optional = true }
 embedded-hal = "1.0.0"
+
+cyw43 = { version = "0.5.0", features = ["defmt", "firmware-logs"], optional = true }
+cyw43-pio = { version = "0.8.0", features = ["defmt"], optional = true }
+
+assign-resources = "0.5.0"
+static_cell = "2.1.1"
 
 [dev-dependencies]
 env_logger = "0.11.5"

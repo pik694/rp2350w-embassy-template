@@ -1,6 +1,10 @@
 #![cfg_attr(not(test), no_std)]
 
 pub mod logging;
+pub mod networking;
+
+#[cfg(feature = "bin")]
+pub mod resources;
 
 use logging::*;
 
