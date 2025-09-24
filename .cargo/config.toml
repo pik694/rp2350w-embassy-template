@@ -1,5 +1,5 @@
 [alias]
-b = "build --target thumbv8m.main-none-eabihf --lib --bins --features bin --no-default-features"
+t = "test --no-default-features --features log --target aarch64-apple-darwin"
 
 [target.thumbv8m.main-none-eabihf]
 runner = [
@@ -18,6 +18,9 @@ rustflags = [
     "-C", "link-arg=-Tdefmt.x",
     "-C", "target-cpu=cortex-m33",
 ]
+
+[build]
+target = "thumbv8m.main-none-eabihf"
 
 [env]
 DEFMT_LOG = "debug"
