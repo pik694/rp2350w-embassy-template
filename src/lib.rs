@@ -1,6 +1,7 @@
 #![cfg_attr(not(test), no_std)]
 
 pub mod logging;
+mod macros;
 pub mod networking;
 
 #[cfg(feature = "bin")]

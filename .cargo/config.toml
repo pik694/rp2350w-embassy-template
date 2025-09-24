@@ -25,3 +25,6 @@ target = "thumbv8m.main-none-eabihf"
 [env]
 DEFMT_LOG = "debug"
 RUST_LOG = "debug"
+
+WIFI_SSID="replaced"
+WIFI_PASSWORD="replaced"

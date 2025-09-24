@@ -17,5 +17,8 @@ assign_resources! {
         spi_dio: PIN_24,
         spi_cs: PIN_25,
         spi_clk: PIN_29
-    }
+    },
+    watchdog: WatchdogResources{
+        w: WATCHDOG
+    },
 }
