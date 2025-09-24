@@ -1,3 +1,7 @@
+[alias]
+b = "build --lib --bins --features bin"
+t = "test --target aarch64-apple-darwin --lib"
+
 [target.thumbv8m.main-none-eabihf]
 runner = [
   "probe-rs",

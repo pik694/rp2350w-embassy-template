@@ -3,9 +3,17 @@ name = "rp2350w-embassy-template"
 version = "0.1.0"
 edition = "2024"
 
-[[bin]]
-name = "rp2350w-embassy-template"
+[lib]
 test = false
+
+[[bin]]
+name = "rp2350w-embassy-template-bin"
+path = "src/bin/main.rs"
+test = false
+required-features = ["bin"]
+
+[features]
+bin = ["embassy-rp"]
 
 [dependencies]
 cortex-m = "0.7"
@@ -17,7 +25,7 @@ defmt-rtt = "^1.0.0"
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 
 embassy-executor = { version = "0.9.1", features = ["defmt", "arch-cortex-m", "executor-thread"] }
-embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"] }
+embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"], optional=true }
 embedded-hal = "1.0.0"
 
 [profile.dev]
