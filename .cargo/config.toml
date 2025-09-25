@@ -9,7 +9,7 @@ runner = [
   "RP235x",
   "--protocol",
   "swd",
-  "--log-format", "{L:severity} {s}"
+  "--log-format", "[{L:severity}] {f:>10}:{l} | {s}"
 ]
 
 rustflags = [
@@ -24,7 +24,7 @@ target = "thumbv8m.main-none-eabihf"
 
 [env]
 DEFMT_LOG = "debug"
-RUST_LOG = "debug"
+RUST_LOG = "warn"
 
 WIFI_SSID="replaced"
 WIFI_PASSWORD="replaced"
