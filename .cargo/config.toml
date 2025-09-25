@@ -2,6 +2,9 @@
 run-baked="run --features baked-cyw43"
 t = "test --no-default-features --features log --target aarch64-apple-darwin"
 
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+linker = "flip-link"
+
 [target.thumbv8m.main-none-eabihf]
 runner = [
   "probe-rs",

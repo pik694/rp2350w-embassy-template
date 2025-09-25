@@ -1,0 +1,65 @@
+name: Lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  WIFI_SSID: "test-network"
+  WIFI_PASSWORD: "test-password"
+
+jobs:
+  lint:
+    name: Linter
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@1.90.0
+      with:
+        targets: thumbv8m.main-none-eabihf,x86_64-unknown-linux-gnu
+
+    - name: Install cargo sort
+      uses: taiki-e/cache-cargo-install-action@caa6f48d18d42462f9c30df89e2b4f71a42b7c2c # v2.0.1
+      with:
+        tool: cargo-sort@1.0.9
+
+    - name: Install cargo machete
+      uses: taiki-e/cache-cargo-install-action@caa6f48d18d42462f9c30df89e2b4f71a42b7c2c # v2.0.1
+      with:
+        tool: cargo-machete@0.7.0
+
+    - name: Cache cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-lint-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-lint-
+
+    - name: Check formatting
+      run: cargo fmt --check
+
+    - name: Check import sorting
+      run: cargo sort --grouped --check --check-format
+
+    - name: Run clippy (warnings as errors)
+      run: |
+        cargo clippy "${CLIPPY_FLAGS[@]}" -- -D warnings
+        cargo clippy --no-default-features --features log --target x86_64-unknown-linux-gnu -- -D warnings
+        for feat in  wifi log baked-cyw43 "baked-cyw43,wifi" ; do
+          cargo clippy --no-default-features --features "${feat}" -- -D warnings
+        done
+
+    - name: Check for unused dependencies
+      run: cargo machete

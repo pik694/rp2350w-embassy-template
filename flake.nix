@@ -25,13 +25,13 @@
 
         buildInputs = [
           rustToolchain
+          pkgs.flip-link
         ];
 
         devTools = [
           pkgs.cargo-sort
           pkgs.cargo-machete
 
-          pkgs.flip-link
           pkgs.probe-rs-tools
         ];
 

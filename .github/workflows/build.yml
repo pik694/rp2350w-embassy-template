@@ -1,0 +1,57 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  WIFI_SSID: "test-network"
+  WIFI_PASSWORD: "test-password"
+
+jobs:
+  build:
+    name: Cross-compile for RP2350
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@1.90.0
+      with:
+        targets: thumbv8m.main-none-eabihf
+
+    - name: Install flip-link
+      uses: taiki-e/cache-cargo-install-action@caa6f48d18d42462f9c30df89e2b4f71a42b7c2c # v2.0.1
+      with:
+        tool: flip-link@0.1.10
+
+    - name: Cache cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-build-
+
+    - name: Check
+      run: |
+        cargo check --locked
+        cargo check --features baked-cyw43 --locked
+
+    - name: Build for RP2350 (debug)
+      run: cargo build --locked
+
+    - name: Build for RP2350 (release)
+      run: cargo build --release --locked
+
+    - name: Build with baked firmware feature
+      run: cargo build --release --features baked-cyw43 --locked

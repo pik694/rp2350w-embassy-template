@@ -31,7 +31,12 @@ echo "2. Running cargo-sort..."
 cargo sort --grouped "${SORT_FLAGS[@]}"
 
 echo "3. Running clippy..."
+
 cargo clippy "${CLIPPY_FLAGS[@]}"
+cargo clippy --no-default-features --features log --target x86_64-unknown-linux-gnu "${CLIPPY_FLAGS[@]}"
+for feat in  wifi log baked-cyw43 "baked-cyw43,wifi" ; do
+    cargo clippy --no-default-features --features "${feat}" "${CLIPPY_FLAGS[@]}"
+done
 
 echo "4. Running cargo-machete..."
 cargo machete "${MACHETE_FLAGS[@]}"

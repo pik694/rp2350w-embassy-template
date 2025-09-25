@@ -27,7 +27,7 @@ defmt-rtt = "^1.0.0"
 log = { version = "0.4.26", optional = true }
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 
-embassy-executor = { version = "0.9.1", features = ["defmt", "arch-cortex-m", "executor-thread"] }
+embassy-executor = { version = "0.9.1", features = ["defmt", "executor-thread"] }
 embassy-net = { version = "0.7.1", features = ["defmt", "tcp", "raw", "dhcpv4", "medium-ethernet", "dns"] }
 embassy-rp = { version = "0.8.0", features = ["rp235xa", "time-driver", "critical-section-impl", "binary-info", "defmt"], optional = true }
 embedded-hal = "1.0.0"
