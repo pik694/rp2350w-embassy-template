@@ -23,31 +23,22 @@
         pkgs = import nixpkgs { inherit system overlays; };
         rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
 
-        devTools = [
+        buildInputs = [
           rustToolchain
-
-          pkgs.cargo-sort
-          pkgs.cargo-machete
         ];
 
-        buildInputs = [
+        devTools = [
+          pkgs.cargo-sort
+          pkgs.cargo-machete
+
           pkgs.flip-link
           pkgs.probe-rs-tools
         ];
 
         bake-cyw43 = pkgs.writeShellApplication {
           name = "bake-cyw43";
-          runtimeInputs = [ ];
-
-          text = ''
-            # Find repository root
-            REPO_ROOT=$(git rev-parse --show-toplevel)
-
-            ${pkgs.probe-rs-tools}/bin/probe-rs download "$REPO_ROOT/assets/cyw43-firmware/43439A0.bin" \
-              --binary-format bin --chip RP235x --base-address 0x10100000 && \
-            ${pkgs.probe-rs-tools}/bin/probe-rs download "$REPO_ROOT/assets/cyw43-firmware/43439A0_clm.bin" \
-              --binary-format bin --chip RP235x --base-address 0x10140000
-          '';
+          runtimeInputs = [ pkgs.git ] ++ devTools;
+          text = builtins.readFile ./scripts/bake-cyw43.sh;
         };
 
         cargo-lint = pkgs.writeShellApplication {

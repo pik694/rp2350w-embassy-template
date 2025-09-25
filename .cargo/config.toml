@@ -1,4 +1,5 @@
 [alias]
+run-baked="run --features baked-cyw43"
 t = "test --no-default-features --features log --target aarch64-apple-darwin"
 
 [target.thumbv8m.main-none-eabihf]
