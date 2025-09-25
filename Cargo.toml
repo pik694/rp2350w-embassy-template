@@ -11,10 +11,10 @@ required-features = ["bin"]
 [features]
 default = ["bin", "wifi"]
 bin = ["embassy-rp", "defmt"]
-log = ["defmt-or-log-log", "dep:log"]
-defmt = ["defmt-or-log-defmt"]
 baked-cyw43 = []
 wifi = ["bin", "cyw43", "cyw43-pio"]
+log = ["dep:log"]
+defmt = []
 
 [dependencies]
 cortex-m = "0.7"
@@ -22,8 +22,7 @@ cortex-m-rt = "0.7"
 critical-section = { version = "1.2", default-features = false }
 
 defmt = "^1.0.1"
-defmt-or-log-defmt = { package = "defmt-or-log", version = "0.2.2", features = ["defmt"], optional = true }
-defmt-or-log-log = { package = "defmt-or-log", version = "0.2.2", features = ["log"], optional = true }
+defmt-or-log = "0.2.2" 
 defmt-rtt = "^1.0.0"
 log = { version = "0.4.26", optional = true }
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
@@ -40,6 +39,14 @@ assign-resources = "0.5.0"
 embassy-futures = "0.1.2"
 embassy-time = "0.5.0"
 static_cell = "2.1.1"
+
+[target.'cfg(target_family="unix")'.dependencies]
+embassy-executor = { version = "0.9.1", features = ["arch-std"] }
+defmt-or-log = { version = "0.2.2", features = ["log"] }
+
+[target.'cfg(not(target_family="unix"))'.dependencies]
+embassy-executor = { version = "0.9.1", features = ["arch-cortex-m"] }
+defmt-or-log = { version = "0.2.2", features = ["defmt"] }
 
 [dev-dependencies]
 env_logger = "0.11.5"

@@ -1,13 +1,15 @@
 #![cfg_attr(not(test), no_std)]
 
-pub mod logging;
+use defmt_or_log::info;
+
 mod macros;
 pub mod networking;
 
+#[cfg(test)]
+pub mod logging;
+
 #[cfg(feature = "bin")]
 pub mod resources;
-
-use logging::*;
 
 pub fn add(lhs: u8, rhs: u8) -> u8 {
     info!("Hi");
@@ -16,6 +18,8 @@ pub fn add(lhs: u8, rhs: u8) -> u8 {
 
 #[cfg(test)]
 mod test {
+    use crate::logging::init_logger;
+
     use super::*;
 
     #[test]

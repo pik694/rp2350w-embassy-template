@@ -1,5 +1,6 @@
 use cyw43::{Control, JoinOptions, NetDriver, PowerManagementMode};
 use cyw43_pio::{DEFAULT_CLOCK_DIVIDER, PioSpi};
+use defmt_or_log::{debug, info, warn};
 use embassy_executor::Spawner;
 use embassy_futures::join::join;
 use embassy_net::{Config, Stack, StackResources};
@@ -8,8 +9,8 @@ use embassy_rp::peripherals::{DMA_CH0, PIO0};
 use embassy_rp::pio::Pio;
 use static_cell::StaticCell;
 
+use crate::measure_time;
 use crate::resources::{Irqs, WifiResources};
-use crate::{logging::*, measure_time};
 
 const WIFI_SSID: &str = env!("WIFI_SSID");
 const WIFI_PASSWORD: &str = env!("WIFI_PASSWORD");

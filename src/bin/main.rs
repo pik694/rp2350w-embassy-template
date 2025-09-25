@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 
+use defmt_or_log::info;
 use embassy_executor::Spawner;
 use embassy_rp::{clocks::RoscRng, watchdog::Watchdog};
 use embassy_time::{Duration, Timer};
@@ -8,7 +9,7 @@ use embassy_time::{Duration, Timer};
 use {defmt_rtt as _, panic_probe as _};
 
 use rp2350w_embassy_template::resources::{AssignedResources, WatchdogResources, WifiResources};
-use rp2350w_embassy_template::{logging::*, split_resources};
+use rp2350w_embassy_template::split_resources;
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) {

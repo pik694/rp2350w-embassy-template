@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! measure_time {
     {$desc:literal, $block:block} => {{
-        use $crate::logging::debug;
+        use defmt_or_log::debug;
 
         debug!("{}: begin", $desc);
         let start = embassy_time::Instant::now();
