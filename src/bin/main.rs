@@ -8,6 +8,19 @@ use embassy_time::{Duration, Timer};
 
 use {defmt_rtt as _, panic_probe as _};
 
+// Program metadata for `picotool info`.
+// This isn't needed, but it's recommended to have these minimal entries.
+#[unsafe(link_section = ".bi_entries")]
+#[used]
+pub static PICOTOOL_ENTRIES: [embassy_rp::binary_info::EntryAddr; 4] = [
+    embassy_rp::binary_info::rp_program_name!(c"RP2350W Embassy Template"),
+    embassy_rp::binary_info::rp_program_description!(
+        c"Embassy-based template for RP2350W microcontroller"
+    ),
+    embassy_rp::binary_info::rp_cargo_version!(),
+    embassy_rp::binary_info::rp_program_build_attribute!(),
+];
+
 use rp2350w_embassy_template::resources::{AssignedResources, WatchdogResources, WifiResources};
 use rp2350w_embassy_template::split_resources;
 
